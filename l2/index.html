@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="module" src="index.js" defer></script>
+</head>
+<body>
+<h3>Hello world!</h3>
+
+<input id="input" type="text">
+<label for="input">Enter number</label>
+<button class="btn" type="button">Проверить</button>
+<div class="div"></div>
+
+<script>
+const btn = document.querySelector('.btn');
+const div = document.querySelector('.div');
+const input = document.getElementById('input');
+
+function validation (){
+try {
+if (isNaN(Number(input.value)) || input.value === ''){
+throw new Error('this is not a number');
+}
+div.textContent = 'congratulations!!!'
+}
+catch (error) {
+div.textContent = error.message;
+}
+}
+btn.addEventListener('click', validation);
+</script>
+</body>
+</html>
