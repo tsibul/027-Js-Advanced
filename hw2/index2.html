@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="container" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; padding: 20px;">
+
+</div>
+<br>
+<button type="button" class="data" style="padding: 10px; margin-left: 20px;
+border: 1px solid black; border-radius: 12px; background-color: green">
+    DATA
+</button>
+
+<script>
+    const container = document.querySelector('.container');
+    const initialData = [
+        {
+            product: "Apple iPhone 13",
+            reviews: [
+                {
+                    id: "1",
+                    text: "Отличный телефон! Батарея держится долго.",
+                },
+                {
+                    id: "2",
+                    text: "Камера супер, фото выглядят просто потрясающе.",
+                },
+            ],
+        },
+        {
+            product: "Samsung Galaxy Z Fold 3",
+            reviews: [
+                {
+                    id: "3",
+                    text: "Интересный дизайн, но дорогой.",
+                },
+            ],
+        },
+        {
+            product: "Sony PlayStation 5",
+            reviews: [
+                {
+                    id: "4",
+                    text: "Люблю играть на PS5, графика на высоте.",
+                },
+            ],
+        },
+    ];
+    let maxId = Math.max(
+        ...initialData.flatMap((item) => item.reviews.map((review) => parseInt(review.id)))
+    );
+    document.querySelector('.data').addEventListener('click', () =>{
+        console.log(initialData);
+    });
+
+    initialData.forEach(product => {
+        const div = document.createElement('div');
+        div.style.border = '1px solid black';
+        div.style.padding = '10px'
+        div.style.borderRadius = '12px'
+        const h3 = document.createElement('h3');
+        const errorMsg = document.createElement('div')
+        errorMsg.classList.add('err-msg');
+        errorMsg.style.color = 'red';
+        errorMsg.style.padding = '4px';
+        const review = reviewBlock(product);
+        const ul = document.createElement('ul')
+
+        h3.textContent = product.product;
+        div.appendChild(h3);
+        div.appendChild(errorMsg);
+        div.appendChild(review);
+        div.appendChild(ul);
+        product.reviews.forEach(rev => {
+            let li = document.createElement('li');
+            li.textContent = rev.id + '. ' + rev.text;
+            ul.appendChild(li);
+        });
+        container.appendChild(div);
+    });
+
+    function reviewBlock(product) {
+        const review = document.createElement('div');
+        review.style.display = 'flex';
+        review.style.justifyContent = 'space-between';
+        review.style.gap = '20px';
+        const reviewInput = document.createElement('textarea');
+        reviewInput.style.padding = '10px'
+        reviewInput.style.borderRadius = '12px';
+        reviewInput.style.width = '100%';
+        reviewInput.placeholder = 'Введите отзыв';
+        const reviewBtn = document.createElement('button');
+        reviewBtn.style.border = '1px solid black';
+        reviewBtn.type = 'button';
+        reviewBtn.style.padding = '10px';
+        reviewBtn.style.borderRadius = '12px';
+        reviewBtn.textContent = 'Комментировать';
+        reviewBtn.addEventListener('click', () => {
+            const errorField = review.parentElement.querySelector('.err-msg')
+            errorField.textContent = '';
+            let line;
+            try {
+                if (reviewInput.value.length < 3 || reviewInput.value.length > 10) {
+                    throw new Error('or to short or to long comment')
+                }
+                line = document.createElement('li');
+                maxId++;
+                line.textContent = maxId + '. ' + reviewInput.value;
+                product.reviews.push({id: maxId.toString(), text: reviewInput.value});
+                review.nextElementSibling.appendChild(line);
+                reviewInput.value = '';
+            } catch (error) {
+                errorField.textContent = error.message;
+            }
+
+        });
+        review.appendChild(reviewInput);
+        review.appendChild(reviewBtn);
+        return review;
+    }
+
+</script>
+</body>
+</html>
+<!--Вы разрабатываете систему отзывов для вашего веб-сайта. -->
+<!--Пользователи могут оставлять отзывы, но чтобы исключить слишком короткие или слишком длинные сообщения, -->
+<!--вы решаете установить некоторые ограничения.-->
+
+<!--Создайте HTML-структуру с текстовым полем для ввода отзыва, к-->
+<!--нопкой для отправки и контейнером, где будут отображаться отзывы.-->
+
+<!--Напишите функцию, которая будет добавлять отзыв в контейнер с отзывами. -->
+<!--Однако если длина введенного отзыва менее 50 или более 500 символов, функция должна генерировать исключение.-->
+
+<!--При добавлении отзыва, он должен отображаться на странице под предыдущими отзывами, а не заменять их.-->
