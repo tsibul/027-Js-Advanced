@@ -47,7 +47,6 @@ function reviewBlock(product) {
     reviewBtn.addEventListener('click', (key, value) => {
         const errorField = review.parentElement.querySelector('.err-msg')
         errorField.textContent = '';
-        // let line, deleteBtn;
         try {
             if (reviewInput.value.length < 10 || reviewInput.value.length > 50) {
                 throw new Error('or to short or to long comment')
